@@ -8,7 +8,7 @@ int main(){
 
     std::cout << "Starting..." << std::endl;
 
-    A[0] = 1;
+    A[0] = 10;
     A[1] = 2;
     A[2] = 3;
     A[3] = 4;
@@ -28,9 +28,20 @@ int main(){
     B[7] = 2;
     B[8] = 1;
 
-    multiply(A, B, C, 3, 3, 3, 3);
+    for(int i = 0; i < 3; i++){
+        for(int j = 0; j < 3; j++){
+            C[i * 3 + j] = i == j ? 1 : 0;
+        }
+    }
 
-    for(int i = 0; i < 9; i++){
-        std::cout << C[i] << " "; 
+    int flag = inverse(A, C, 3);
+
+    std::cout << flag << std::endl;
+
+    for(int i = 0; i < 3; i++){
+        for(int j = 0; j < 3; j++){
+            std::cout << C[i * 3 + j] << " "; 
+        }
+        std::cout << std::endl;
     }
 }

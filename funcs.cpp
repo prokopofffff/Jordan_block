@@ -1,5 +1,7 @@
 #include "funcs.h"
 #include <cstring>
+#include <float.h>
+#include <iostream>
 
 void set_block(double *A, double *block, int n, int m, int i, int j) {
     int k = n / m;
@@ -187,15 +189,48 @@ void subtract(double *A, double *B, int n, int m){
     }
 }
 
-int inverse(double *C, int n, int m){
-    //n - количесвто строк
-    //m - количество столбцов
-
-    int i, j;
-
-    for(i = 0; i < m; i++){
-        for(j = 0; j < n; j++){
-            C[i * m + j] = j == i ? 1 : 0;
+int inverse(double *A, double *C, int n){
+    int i, j, k, row;
+    double min, a;
+    for(j = 0; j < n; j++){
+        min = DBL_MAX;
+        for(i = j; i < n; i++){
+            if(min > absolute(A[i * n + j]) && A[i * n + j] != 0){
+                min = absolute(A[i * n + j]);
+                row = i;
+            }
+        }
+        if(min != DBL_MAX){
+            if(row != j){
+                for(i = 0; i < n; i++){
+                    a = A[j * n + i];
+                    A[j * n + i] = A[row * n + i];
+                    A[row * n + i] = a;
+                    a = C[j * n + i];
+                    C[j * n + i] = C[row * n + i];
+                    C[row * n + i] = a;
+                }
+            }
+            min = A[j * n + j];
+            for(i = j; i < n; i++){
+                A[j * n + i] /= min;
+            }
+            for(i = 0; i < n; i++){
+                C[j * n + i] /= min;
+            }
+            for(i = 0; i < n; i++){
+                if(i == j) continue;
+                a = A[i * n + j];
+                for(k = 0; k < n; k++){
+                    A[i * n + k] -= A[j * n + k] * a;
+                }
+                for(k = 0; k < n; k++){
+                    C[i * n + k] -= C[j * n + k] * a;
+                }
+            }
+        }
+        else{
+            return -1;
         }
     }
 

@@ -19,7 +19,7 @@ void multiply(double *A, double *B, double *C, int rows_a, int cols_a, int rows_
 
 void subtract(double *A, double *B, int n, int m);
 
-int inverse(double *A, double *C, int n, int m);
+int inverse(double *A, double *C, int n);
 
 void get_free_memb(double *A, double *B, int n);
 
