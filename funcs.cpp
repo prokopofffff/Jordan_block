@@ -190,51 +190,83 @@ void subtract(double *A, double *B, int n, int m){
 }
 
 int inverse(double *A, double *C, int n){
-    int i, j, k, row;
+    int i, j, k, row = 0;
     double min, a;
-    for(j = 0; j < n; j++){
-        min = DBL_MAX;
-        for(i = j; i < n; i++){
-            if(min > absolute(A[i * n + j]) && A[i * n + j] != 0){
-                min = absolute(A[i * n + j]);
-                row = i;
-            }
-        }
-        if(min != DBL_MAX){
-            if(row != j){
-                for(i = 0; i < n; i++){
-                    a = A[j * n + i];
-                    A[j * n + i] = A[row * n + i];
-                    A[row * n + i] = a;
-                    a = C[j * n + i];
-                    C[j * n + i] = C[row * n + i];
-                    C[row * n + i] = a;
-                }
-            }
-            min = A[j * n + j];
-            for(i = j; i < n; i++){
-                A[j * n + i] /= min;
-            }
-            for(i = 0; i < n; i++){
-                C[j * n + i] /= min;
-            }
-            for(i = 0; i < n; i++){
-                if(i == j) continue;
-                a = A[i * n + j];
-                for(k = 0; k < n; k++){
-                    A[i * n + k] -= A[j * n + k] * a;
-                }
-                for(k = 0; k < n; k++){
-                    C[i * n + k] -= C[j * n + k] * a;
-                }
-            }
+    if(n == 1){
+        if(absolute(A[0]) > 0){
+            C[0] = 1 / A[0];
+            return 1;
         }
         else{
             return -1;
         }
     }
+    else if(n == 2){
+        std::cout << "Зашел в н = 2" << std::endl;
+        for(i = 0; i < n; i++){
+            for(j = 0; j < n; j++){
+                std::cout << A[i * n + j] << " ";
+            }
+            std::cout << std::endl;
+        }
+        double d = A[0] * A[3] - A[1] * A[2];
+        std::cout << d << std::endl;
+        if(absolute(d) > 0){
+            C[0] = A[3] / d;
+            C[1] = -A[1] / d;
+            C[2] = -A[2] / d;
+            C[3] = -A[0] / d;
+            return 1;
+        }
+        else{
+            return -1;
+        }
+    }
+    else{
+        for(j = 0; j < n; j++){
+            min = DBL_MAX;
+            for(i = j; i < n; i++){
+                if(min > absolute(A[i * n + j]) && absolute(A[i * n + j]) > 0 ){
+                    min = absolute(A[i * n + j]);
+                    row = i;
+                }
+            }
+            if(min < DBL_MAX){
+                if(row != j){
+                    for(i = 0; i < n; i++){
+                        a = A[j * n + i];
+                        A[j * n + i] = A[row * n + i];
+                        A[row * n + i] = a;
+                        a = C[j * n + i];
+                        C[j * n + i] = C[row * n + i];
+                        C[row * n + i] = a;
+                    }
+                }
+                min = A[j * n + j];
+                for(i = j; i < n; i++){
+                    A[j * n + i] /= min;
+                }
+                for(i = 0; i < n; i++){
+                    C[j * n + i] /= min;
+                }
+                for(i = 0; i < n; i++){
+                    if(i == j) continue;
+                    a = A[i * n + j];
+                    for(k = 0; k < n; k++){
+                        A[i * n + k] -= A[j * n + k] * a;
+                    }
+                    for(k = 0; k < n; k++){
+                        C[i * n + k] -= C[j * n + k] * a;
+                    }
+                }
+            }
+            else{
+                return -1;
+            }
+        }
 
-    return 1;
+        return 1;
+    }
 }
 
 void get_free_memb(double *A, double *B, int n){
@@ -243,7 +275,7 @@ void get_free_memb(double *A, double *B, int n){
 
     for(i = 0; i < n; i++){
         B[i] = 0;
-        for(j = 1; j < n; j += 2)
+        for(j = 0; j < n; j += 2)
         B[i] += A[n * i + j];
     }
 }

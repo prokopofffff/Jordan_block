@@ -2,9 +2,11 @@
 #include <fstream>
 #include <iostream>
 #include <typeinfo>
+#include <iomanip>
 
 void matrix_input(char *filename, double *matrix, int n){
-    std::ifstream file(filename);
+    std::ifstream file1(filename);
+    std::ifstream file("./matrix.txt");
 
     if(!(file.is_open())){
         throw "Can not open file";
@@ -23,15 +25,14 @@ void matrix_input(char *filename, double *matrix, int n){
     if(count < n * n){
         throw "Not enough data";
     }
-    // else if(count > n * n){
-    //     throw "Too much data";
-    // }
+
+    file.close();
 }
 
 void matrix_output(double *matrix, int l, int n, int r){
     for(int i = 0; i < l && i <= r; i++){
         for(int j = 0; j < n && j <= r; j++){
-            std::cout << matrix[i * n + j] << " ";
+            std::cout << std::scientific << matrix[i * n + j] << " ";
         }
         std::cout << std::endl;
     }

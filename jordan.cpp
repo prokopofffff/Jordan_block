@@ -1,11 +1,14 @@
 #include "jordan.h"
 #include "funcs.h"
+#include <iostream>
+
+#define EPSILON 0.000000000000000000000000000001
 
 int Jordan(double *A, double *B, double *X, double *C, double *block, double *dop_mat, int n, int m){
     int i, j, p, q, s;
     int k = n / m;
     int l = n % m;
-    int cur_i;
+    int cur_i = 0;
     int h = (l != 0 ? k : k + 1);
     int flag;
 
@@ -29,7 +32,11 @@ int Jordan(double *A, double *B, double *X, double *C, double *block, double *do
                 break;
             }
         }
-        if(flag == -1) return 0;
+        if(flag == -1){
+            std::cout << "34";
+            return -1;
+        }
+        
         for(i = 0; i < h; i++){
             if(cur_i == i) continue;
             get_block(A, block, n, m, i, p);
@@ -53,8 +60,17 @@ int Jordan(double *A, double *B, double *X, double *C, double *block, double *do
     }
     if(l != 0){
         get_block(A, block, n, m, k + 1, k + 1);
+        for(i = 0; i < l; i++){
+            for(j = 0; j < l; j++){
+                std::cout << block[i * l + j] << " ";
+            }
+            std::cout << std::endl;
+        }
         flag = inverse(block, C, l);
-        if(flag == -1) return 0;
+        if(flag == -1){
+            std::cout << l;
+            return -1;
+        }
         E(block, l);
         set_block(A, block, n, m, k + 1, k + 1);
         multiply(C, block, dop_mat, l, l, l, l);
@@ -77,7 +93,7 @@ int Jordan(double *A, double *B, double *X, double *C, double *block, double *do
     for(i = 0; i < k; i++){
         for(j = 0; j < k; j++){
             get_block(A, block, n, m, i, j);
-            if(block[0] == 1){
+            if(block[0] > 1 - EPSILON && block[0] < 1 + EPSILON){
                 X[j] = B[i];
                 break;    
             }

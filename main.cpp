@@ -38,6 +38,7 @@ int main(int argc, char* argv[]){
 
         double start1 = clock();
         int flag = Jordan(A, B, X, C, block, dop_mat, n, m);
+        std::cout << flag;
         double end1 = clock();
         double t1 = (end1 - start1) / CLOCKS_PER_SEC;
 
