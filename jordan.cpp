@@ -13,7 +13,7 @@ int Jordan(double *A, double *B, double *X, double *C, double *block, double *do
         flag = -1;
         for(q = 0; q < (l != 0 ? k : k - 1); q++){
             get_block(A, block, n, m, q, p);
-            flag = inverse(block, C, m, m);
+            flag = inverse(block, C, m);
             if(flag == 1){
                 cur_i = q;
                 E(block, m);
@@ -53,7 +53,7 @@ int Jordan(double *A, double *B, double *X, double *C, double *block, double *do
     }
     if(l != 0){
         get_block(A, block, n, m, k + 1, k + 1);
-        flag = inverse(block, C, l, l);
+        flag = inverse(block, C, l);
         if(flag == -1) return 0;
         E(block, l);
         set_block(A, block, n, m, k + 1, k + 1);
