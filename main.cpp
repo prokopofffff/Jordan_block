@@ -28,6 +28,8 @@ int main(int argc, char* argv[]){
             }
         }
 
+        matrix_output(A, n, n, r);
+
         double *B = new double[n];
         double *X = new double[n];
         double *block = new double[m * m];
@@ -38,7 +40,6 @@ int main(int argc, char* argv[]){
 
         double start1 = clock();
         int flag = Jordan(A, B, X, C, block, dop_mat, n, m);
-        std::cout << flag;
         double end1 = clock();
         double t1 = (end1 - start1) / CLOCKS_PER_SEC;
 
@@ -46,8 +47,9 @@ int main(int argc, char* argv[]){
         double r1 = -1;
         double r2 = -1;
         if(flag == 1){
+            std::cout << std::endl;
             matrix_output(X, 1, n, r);
-            
+            std::cout << std::endl;
             double start2 = clock();
             r1 = get_r1(A, X, B, n);
             r2 = get_r2(X, n);

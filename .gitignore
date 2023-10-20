@@ -4,3 +4,6 @@
 *.out
 *.h.gch
 *.txt
+test
+test.cpp
+.vscode/

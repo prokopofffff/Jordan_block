@@ -3,13 +3,15 @@
 #include <float.h>
 #include <iostream>
 
+#define EPSILON 2.22507e-308
+
 void set_block(double *A, double *block, int n, int m, int i, int j) {
     int k = n / m;
     int w = j < k ? m : n % m, h = i < k ? m : n % m;
     double *corner = A + i * n * m + j * m;
     for(int x = 0; x < h; x++){
         for(int y = 0; y < w; y++){
-            corner[x * n + y] = block[x * m + y];
+            corner[x * n + y] = block[x * w + y];
         }
     }
 }
@@ -20,7 +22,7 @@ void get_block(double *A, double *block, int n, int m, int i, int j){
     double *corner = A + i * n * m + j * m;
     for(int x = 0; x < h; x++){
         for(int y = 0; y < w; y++){
-            block[x * m + y] = corner[x * n + y];
+            block[x * w + y] = corner[x * n + y];
         }
     }
 }
@@ -117,8 +119,8 @@ void multiply(double *A, double *B, double *C, int rows_a, int cols_a, int rows_
             s01 = 0;
             s02 = 0;
             for(k = 0; k < cols_a; k++){
-                s00 += A[i * cols_a + k] * B[k * cols_a + j];
-                s01 += A[i * cols_a + k] * B[k *cols_b + j + 1];
+                s00 += A[i * cols_a + k] * B[k * cols_b + j];
+                s01 += A[i * cols_a + k] * B[k * cols_b + j + 1];
                 s02 += A[i * cols_a + k] * B[k * cols_b + j + 2];
             }
             C[i * cols_b + j] += s00;
@@ -132,9 +134,9 @@ void multiply(double *A, double *B, double *C, int rows_a, int cols_a, int rows_
             s10 = 0;
             s20 = 0;
             for(k = 0; k < cols_a; k++){
-                s00 += A[i * cols_a + k] * B[k * cols_a + j];
-                s10 += A[(i + 1) * cols_a + k] * B[k * cols_a + j];
-                s20 += A[(i + 2) * cols_a + k] * B[k * cols_a + j];
+                s00 += A[i * cols_a + k] * B[k * cols_b + j];
+                s10 += A[(i + 1) * cols_a + k] * B[k * cols_b + j];
+                s20 += A[(i + 2) * cols_a + k] * B[k * cols_b + j];
 
             }
             C[i * cols_b + j] += s00;
@@ -184,7 +186,7 @@ void subtract(double *A, double *B, int n, int m){
 
     for(i = 0; i < n; i++){
         for(j = 0; j < m; j++){
-            A[i * n + j] = A[i * n + j] - B[i * n + j];
+            A[i * m + j] -= B[i * m + j];
         }
     }
 }
@@ -201,28 +203,12 @@ int inverse(double *A, double *C, int n){
             return -1;
         }
     }
-    else if(n == 2){
-        std::cout << "Зашел в н = 2" << std::endl;
+    else{
         for(i = 0; i < n; i++){
             for(j = 0; j < n; j++){
-                std::cout << A[i * n + j] << " ";
+                C[i * n + j] = i == j ? 1 : 0;
             }
-            std::cout << std::endl;
         }
-        double d = A[0] * A[3] - A[1] * A[2];
-        std::cout << d << std::endl;
-        if(absolute(d) > 0){
-            C[0] = A[3] / d;
-            C[1] = -A[1] / d;
-            C[2] = -A[2] / d;
-            C[3] = -A[0] / d;
-            return 1;
-        }
-        else{
-            return -1;
-        }
-    }
-    else{
         for(j = 0; j < n; j++){
             min = DBL_MAX;
             for(i = j; i < n; i++){
@@ -264,7 +250,6 @@ int inverse(double *A, double *C, int n){
                 return -1;
             }
         }
-
         return 1;
     }
 }
@@ -327,7 +312,16 @@ void E(double *A, int n){
 void zero(double *A, int n, int m){
     for(int i = 0; i < n; i++){
         for(int j = 0; j < m; j++){
-            A[i * n + j] = 0;
+            A[i * m + j] = 0;
         }
     }
+}
+
+int compare_with_zero(double *A, int n){
+    for(int i = 0; i < n; i++){
+        for(int j = 0; j < n; j++){
+            if(A[i * n + j] < 0 - EPSILON || A[i * n + j] > 0 + EPSILON) return -1;
+        }
+    }
+    return 1;
 }
