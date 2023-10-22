@@ -316,12 +316,3 @@ void zero(double *A, int n, int m){
         }
     }
 }
-
-int compare_with_zero(double *A, int n){
-    for(int i = 0; i < n; i++){
-        for(int j = 0; j < n; j++){
-            if(A[i * n + j] < 0 - EPSILON || A[i * n + j] > 0 + EPSILON) return -1;
-        }
-    }
-    return 1;
-}

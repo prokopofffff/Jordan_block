@@ -35,6 +35,4 @@ void E(double *A, int n);
 
 void zero(double *A, int n, int m);
 
-int compare_with_zero(double *A, int n);
-
 #endif
