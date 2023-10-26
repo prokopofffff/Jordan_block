@@ -5,8 +5,7 @@
 #include <iomanip>
 
 void matrix_input(char *filename, double *matrix, int n){
-    std::ifstream file1(filename);
-    std::ifstream file("./matrix.txt");
+    std::ifstream file(filename);
 
     if(!(file.is_open())){
         throw "Can not open file";
