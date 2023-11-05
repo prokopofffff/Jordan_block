@@ -24,6 +24,16 @@ int main(int argc, char* argv[]){
             for(int i = 0; i < n; i++){
                 for(int j = 0; j < n; j++){
                     A[i * n + j] = f(s, n, i, j);
+                    if(s == 4 && A[i * n + j] == 0){
+                        delete[] A;
+                        throw "Division by zero";
+                        return -1;
+                    }
+                    if(s != 1 && s != 2 && s != 3 && s != 4){
+                        delete[] A;
+                        throw "Undefined behaivor";
+                        return -1;
+                    }
                 }
             }
         }
