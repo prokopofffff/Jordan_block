@@ -2,6 +2,16 @@
 #include "funcs.h"
 #include <iostream>
 
+struct args{
+    double* A;
+    double* B;
+    double* C;
+};
+
+void* func(void* args){
+
+}
+
 int Jordan(double *A, double *B, double *X, double *C, double *block, double *dop_mat, int n, int m){
     int i, j, p, s;
     int k = n / m;
@@ -9,12 +19,12 @@ int Jordan(double *A, double *B, double *X, double *C, double *block, double *do
     int h = (l == 0 ? k : k + 1);
     int flag;
 
-    for(p = 0; p < k; p++){
+    for(p = 0; p < h; p++){
         get_block(A, block, n, m, p, p);
         flag = -1;
-        flag = inverse(block, C, m);
+        flag = inverse(block, C, p != k ? m : l);
         if(flag == -1) return -1;
-        E(block, m);
+        E(block, p != k ? m : l);
         set_block(A, block, n, m, p, p);
         for(s = p + 1; s < h; s++){
             get_block(A, block, n, m, p, s);
@@ -22,7 +32,7 @@ int Jordan(double *A, double *B, double *X, double *C, double *block, double *do
             set_block(A, dop_mat, n, m, p, s);
         }
         get_vector(B, X, n, m, p);
-        multiply(C, X, dop_mat, m, m, m, 1);
+        multiply(C, X, dop_mat, p != k ? m : l, p != k ? m : l, p != k ? m : l, 1);
         set_vector(B, dop_mat, n, m, p);
 
         for(i = 0; i < h; i++){
@@ -37,12 +47,12 @@ int Jordan(double *A, double *B, double *X, double *C, double *block, double *do
             }
             get_block(A, block, n, m, i, p);
             get_vector(B, X, n, m, p);
-            multiply(block, X, dop_mat, (i != k ? m : l), m, m, 1);
+            multiply(block, X, dop_mat, (i != k ? m : l), p != k ? m : l, p != k ? m : l, 1);
             get_vector(B, X, n, m, i);
             subtract(X, dop_mat, (i != k ? m : l), 1);
             set_vector(B, X, n, m, i);
             get_block(A, block, n, m, i, p);
-            zero(block, (i != k ? m : l), m);
+            zero(block, (i != k ? m : l), p != k ? m : l);
             set_block(A, block, n, m, i, p);
         }
     }
