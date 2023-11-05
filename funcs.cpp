@@ -60,6 +60,7 @@ double f(int s, int n, int i, int j){
             return 1. / (i + j + 1.);
             break;
         default:
+            return -1;
             break;
     }
 }
@@ -92,17 +93,17 @@ double get_r2(double *X, int n){
     return sum;
 }
 
-struct args_mult{
-    int row;
-    int col;
-    double* A;
-    double* C;
-    double res;
-};
+// struct args_mult{
+//     int row;
+//     int col;
+//     double* A;
+//     double* C;
+//     double res;
+// };
 
-void* mult(void* args){
+// void* mult(void* args){
 
-}
+// }
 
 void multiply(double *A, double *B, double *C, int rows_a, int cols_a, int rows_b, int cols_b){
 	int i, j, k;

@@ -2,15 +2,15 @@
 #include "funcs.h"
 #include <iostream>
 
-struct args{
-    double* A;
-    double* B;
-    double* C;
-};
+// struct args{
+//     double* A;
+//     double* B;
+//     double* C;
+// };
 
-void* func(void* args){
+// void* func(void* args){
 
-}
+// }
 
 int Jordan(double *A, double *B, double *X, double *C, double *block, double *dop_mat, int n, int m){
     int i, j, p, s;
