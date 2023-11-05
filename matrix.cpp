@@ -8,6 +8,7 @@ void matrix_input(char *filename, double *matrix, int n){
     std::ifstream file(filename);
 
     if(!(file.is_open())){
+        delete[] matrix;
         throw "Can not open file";
     }
 
@@ -16,12 +17,16 @@ void matrix_input(char *filename, double *matrix, int n){
 
     while(file){
         file >> matrix[count];
-        if(typeid(matrix[count]).name() == typeid(c).name()) throw "Incorrect type";
+        if(typeid(matrix[count]).name() == typeid(c).name()){
+            delete[] matrix;
+            throw "Incorrect type";
+        }
         count++;
         if(count == n * n) break;
     }
 
     if(count < n * n){
+        delete[] matrix;
         throw "Not enough data";
     }
 
