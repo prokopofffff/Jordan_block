@@ -57,11 +57,10 @@ double f(int s, int n, int i, int j){
             return absolute(i - j);
             break;
         case 4:
-            if(i + j == 1) throw "Division by zero";
-            return 1 / (i + j - 1);
+            if(i + j == 1) return 0;
+            return 1. / (i + j - 1.);
             break;
         default:
-            throw "Undefined behavior";
             break;
     }
 }
@@ -92,6 +91,18 @@ double get_r2(double *X, int n){
     }
 
     return sum;
+}
+
+struct args_mult{
+    int row;
+    int col;
+    double* A;
+    double* C;
+    double res;
+};
+
+void* mult(void* args){
+
 }
 
 void multiply(double *A, double *B, double *C, int rows_a, int cols_a, int rows_b, int cols_b){
