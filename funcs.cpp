@@ -57,8 +57,7 @@ double f(int s, int n, int i, int j){
             return absolute(i - j);
             break;
         case 4:
-            if(i + j == 1) return 0;
-            return 1. / (i + j - 1.);
+            return 1. / (i + j + 1.);
             break;
         default:
             break;
