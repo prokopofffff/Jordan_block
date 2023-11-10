@@ -13,11 +13,9 @@ void matrix_input(char *filename, double *matrix, int n){
     }
 
     int count = 0;
-    char c = ')';
 
     while(file){
-        file >> matrix[count];
-        if(typeid(matrix[count]).name() == typeid(c).name()){
+        if(!(file >> matrix[count])){
             delete[] matrix;
             throw "Incorrect type";
         }
