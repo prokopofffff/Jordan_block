@@ -85,9 +85,13 @@ double get_r1(double *A, double *X, double *B, int n){
 
 double get_r2(double *X, int n){
     double sum = 0;
+    for(int i = 0; i < n; i++){
+        std::cout << X[i] << " ";
+    }
+    std::cout << std::endl;
 
     for(int i = 0; i < n; i++){
-        sum += absolute(X[i] - (i % 2));
+        sum += absolute(X[i] - ((i + 1) % 2));
     }
 
     return sum;
@@ -206,8 +210,9 @@ int inverse(double *A, double *C, int n){
     int i, j, k, row = 0;
     double min, a;
     if(n == 1){
-        if(absolute(A[0]) > 0){
+        if(A[0] > 0 || A[0] < 0){
             C[0] = 1 / A[0];
+            A[0] = 1;
             return 1;
         }
         else{
@@ -220,6 +225,14 @@ int inverse(double *A, double *C, int n){
                 C[i * n + j] = i == j ? 1 : 0;
             }
         }
+        // std::cout << std::endl;
+        // for(i = 0; i < n; i++){
+        //     for(j = 0; j < n; j++){
+        //         std::cout << A[i * n + j] << " ";
+        //     }
+        //     std::cout << std::endl;
+        // }
+        // std::cout << std::endl;
         for(j = 0; j < n; j++){
             min = DBL_MAX;
             for(i = j; i < n; i++){
@@ -261,6 +274,14 @@ int inverse(double *A, double *C, int n){
                 return -1;
             }
         }
+        // std::cout << std::endl;
+        // for(i = 0; i < n; i++){
+        //     for(j = 0; j < n; j++){
+        //         std::cout << C[i * n + j] << " ";
+        //     }
+        //     std::cout << std::endl;
+        // }
+        // std::cout << std::endl;
         return 1;
     }
 }

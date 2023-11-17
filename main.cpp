@@ -42,7 +42,7 @@ int main(int argc, char* argv[]){
         double *dop_mat = new double[m * m];
 
         get_free_memb(A, B, n);
-
+        
         double start1 = clock();
         int flag = Jordan(A, B, X, C, block, dop_mat, n, m);
         double end1 = clock();

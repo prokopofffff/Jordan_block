@@ -32,8 +32,8 @@ void matrix_input(char *filename, double *matrix, int n){
 }
 
 void matrix_output(double *matrix, int l, int n, int r){
-    for(int i = 0; i < l && i <= r; i++){
-        for(int j = 0; j < n && j <= r; j++){
+    for(int i = 0; i < l && i < r; i++){
+        for(int j = 0; j < n && j < r; j++){
             std::cout << std::scientific << matrix[i * n + j] << " ";
         }
         std::cout << std::endl;
