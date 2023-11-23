@@ -42,11 +42,30 @@ int main(int argc, char* argv[]){
         double *dop_mat = new double[m * m];
 
         get_free_memb(A, B, n);
-        
+
         double start1 = clock();
         int flag = Jordan(A, B, X, C, block, dop_mat, n, m);
         double end1 = clock();
         double t1 = (end1 - start1) / CLOCKS_PER_SEC;
+
+        if(s == 0){
+            filename = argv[5];
+            matrix_input(filename, A, n);
+        }
+        else{
+            for(int i = 0; i < n; i++){
+                for(int j = 0; j < n; j++){
+                    A[i * n + j] = f(s, n, i, j);
+                    if(s != 1 && s != 2 && s != 3 && s != 4){
+                        delete[] A;
+                        throw "Undefined behaivor";
+                        return -1;
+                    }
+                }
+            }
+        }
+
+        get_free_memb(A, B, n);
 
         double t2 = 0;
         double r1 = -1;

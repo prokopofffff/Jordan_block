@@ -2,8 +2,9 @@
 #include <cstring>
 #include <float.h>
 #include <iostream>
+#include "matrix.h"
 
-#define EPSILON 2.22507e-308
+#define EPSILON 1.0e-15
 
 void set_block(double *A, double *block, int n, int m, int i, int j) {
     int k = n / m;
@@ -85,10 +86,6 @@ double get_r1(double *A, double *X, double *B, int n){
 
 double get_r2(double *X, int n){
     double sum = 0;
-    for(int i = 0; i < n; i++){
-        std::cout << X[i] << " ";
-    }
-    std::cout << std::endl;
 
     for(int i = 0; i < n; i++){
         sum += absolute(X[i] - ((i + 1) % 2));
@@ -225,18 +222,10 @@ int inverse(double *A, double *C, int n){
                 C[i * n + j] = i == j ? 1 : 0;
             }
         }
-        // std::cout << std::endl;
-        // for(i = 0; i < n; i++){
-        //     for(j = 0; j < n; j++){
-        //         std::cout << A[i * n + j] << " ";
-        //     }
-        //     std::cout << std::endl;
-        // }
-        // std::cout << std::endl;
         for(j = 0; j < n; j++){
             min = DBL_MAX;
             for(i = j; i < n; i++){
-                if(min > absolute(A[i * n + j]) && absolute(A[i * n + j]) > 0 ){
+                if(min > absolute(A[i * n + j]) && absolute(A[i * n + j]) > EPSILON ){
                     min = absolute(A[i * n + j]);
                     row = i;
                 }
@@ -274,14 +263,6 @@ int inverse(double *A, double *C, int n){
                 return -1;
             }
         }
-        // std::cout << std::endl;
-        // for(i = 0; i < n; i++){
-        //     for(j = 0; j < n; j++){
-        //         std::cout << C[i * n + j] << " ";
-        //     }
-        //     std::cout << std::endl;
-        // }
-        // std::cout << std::endl;
         return 1;
     }
 }
