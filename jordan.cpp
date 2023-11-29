@@ -3,19 +3,19 @@
 #include <iostream>
 #include <pthread.h>
 
-// struct args_row{
-//     double* A;
-//     double* B;
-//     double* C;
-//     double* block;
-//     double* dop_mat;
-//     int n;
-//     int m;
-//     int row;
-//     int col;
-//     int k;
-//     int l;
-// };
+struct args_row{
+    double* A;
+    double* B;
+    double* C;
+    double* block;
+    double* dop_mat;
+    int n;
+    int m;
+    int row;
+    int col;
+    int k;
+    int l;
+};
 
 // void* multRow(void* args){
 //     args_row* a = (args_row*)args;
@@ -27,14 +27,21 @@ int Jordan(double *A, double *B, double *X, double *C, double *block, double *do
     int l = n % m;
     int h = (l == 0 ? k : k + 1);
     int flag;
+    double norm = A[0];
 
+    for(i = 0; i < n; i++){
+        for(j = 0; j < n; j++){
+            if(norm < A[i * n + j]) norm = A[i * n + j];
+        }
+    }
     // pthread_t* threads = new pthread_t[h];
     // args_row* args = new args_row[h];
+
 
     for(p = 0; p < h; p++){
         get_block(A, block, n, m, p, p);
         flag = -1;
-        flag = inverse(block, C, p != k ? m : l);
+        flag = inverse(block, C, p != k ? m : l, norm);
         if(flag == -1) return -1;
         set_block(A, block, n, m, p, p);
         for(s = p + 1; s < h; s++){

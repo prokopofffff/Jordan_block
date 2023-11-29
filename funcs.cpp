@@ -4,7 +4,7 @@
 #include <iostream>
 #include "matrix.h"
 
-#define EPSILON 1.0e-14
+#define EPSILON 1.0e-15
 
 void set_block(double *A, double *block, int n, int m, int i, int j) {
     int k = n / m;
@@ -203,7 +203,7 @@ void subtract(double *A, double *B, int n, int m){
     }
 }
 
-int inverse(double *A, double *C, int n){
+int inverse(double *A, double *C, int n, double norm){
     int i, j, k, row = 0;
     double min, a;
     if(n == 1){
@@ -222,16 +222,16 @@ int inverse(double *A, double *C, int n){
                 C[i * n + j] = i == j ? 1 : 0;
             }
         }
-        double norm = A[0];
-        for(int i = 0; i < n; i++){
-            for(int j = 0; j < n; j++){
-                if(norm < A[i * n + j]) norm = A[i * n + j];
-            }
-        }
+        // double norm = A[0];
+        // for(int i = 0; i < n; i++){
+        //     for(int j = 0; j < n; j++){
+        //         if(norm < A[i * n + j]) norm = A[i * n + j];
+        //     }
+        // }
         for(j = 0; j < n; j++){
             min = DBL_MAX;
             for(i = j; i < n; i++){
-                if(min > absolute(A[i * n + j]) && absolute(A[i * n + j]) > (EPSILON * norm) ){
+                if(min > absolute(A[i * n + j]) && absolute(A[i * n + j]) > EPSILON * norm){
                     min = absolute(A[i * n + j]);
                     row = i;
                 }
