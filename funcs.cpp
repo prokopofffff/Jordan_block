@@ -4,7 +4,7 @@
 #include <iostream>
 #include "matrix.h"
 
-#define EPSILON 1.0e-15
+#define EPSILON 1.0e-14
 
 void set_block(double *A, double *block, int n, int m, int i, int j) {
     int k = n / m;
